@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+
+body {
+  @apply bg-zinc-100;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+p {
+    font-family: "Manrope", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+  }
+
+
+.react-calendar__tile {
+    /* @apply w-9 h-9 */
+  }
+  
+  .fallout .m-2 {
+    margin: 2px 0px;
+  }
+  
+  .fallout .react-calendar {
+    @apply p-0
+  }
+  
+  .fallout .react-calendar__navigation button {
+    @apply flex items-center justify-center
+  }
+  
+  .fallout .week .day-block.current-day .day {
+    @apply text-teal-500;
+    @apply hover:border-none;
+  }
+  
+  .fallout .react-calendar .react-calendar__tile:enabled:hover {
+    @apply bg-teal-600 text-white;
+  }
+  
+  
+  .fallout .react-calendar__month-view .react-calendar__tile--rangeStart {
+    @apply bg-teal-600 !important;
+    @apply text-white !important;
+  }
+  
+  .fallout .react-calendar__month-view .react-calendar__tile--rangeEnd {
+    @apply bg-teal-600 !important;
+    @apply text-white !important;
+  }
+  
+  .fallout .react-calendar__tile--now {
+    @apply text-teal-400;
+  }
+  
+  .fallout .react-calendar__month-view .react-calendar__tile--range {
+    @apply bg-teal-200 !important;
+    @apply text-teal-700 !important;
+  }
+  
+  .fallout .react-calendar--selectRange .react-calendar__tile--hover {
+    @apply bg-teal-200;
+    @apply text-teal-700;
+    border-radius: 100% !important;
+  }
+  
+  .fallout .react-calendar__tile:enabled:hover,
+  .fallout .react-calendar__tile:enabled:focus {
+    @apply bg-teal-200;
+    @apply text-teal-700;
+  }
+  
+  .fallout .react-calendar__month-view__days {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+  
+  .hoverEnd,
+  .hoverStart {
+    background: none !important;
+  }
