@@ -3,14 +3,15 @@ import React from "react";
 
 interface BtnProps extends ButtonProps {
   label: string;
+  widthClass?: string;
 }
 
-const Button: React.FC<BtnProps> = ({label, ...rest}) => {
+const Button: React.FC<BtnProps> = ({label, widthClass, ...rest}) => {
   return (
     <>
       <button
         {...rest}
-        className="px-4 py-2 rounded-lg bg-black text-white hover:bg-zinc-800 text-sm"
+        className={`px-4 py-2 rounded-lg bg-black text-white hover:bg-zinc-800 text-sm ${widthClass}`}
       >
         {label}
       </button>

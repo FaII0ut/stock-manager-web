@@ -3,14 +3,50 @@ import TextInput from "../inputs/TextInput";
 import ApiSearch from "../inputs/ApiSearch";
 import DatePicker from "../inputs/DatePicker";
 
-interface AddInventoryProps {}
+interface AddInventoryProps {
+  changed?: boolean;
+  confirm?: boolean;
+  open?: boolean;
+  setLoading?: (value: boolean) => void;
+  setConfirm?: (value: boolean) => void;
+  onSuccess?: (item: any) => void;
+  type?: string;
+  item?: any;
+}
 
 const AddInventory: React.FC<AddInventoryProps> = ({}) => {
+  const [loading, setLoading] = useState<any>(false);
   const [details, setDetails] = useState<any>({name: ""});
 
   const handleChange = (value: any, field: string) => {
     details[field] = value;
     setDetails({...details});
+  };
+
+  const handleSave = async () => {
+    let response = {
+      ...details,
+      icon: details.icon.id,
+    };
+    setLoading(true);
+    try {
+      details.id
+        ? (response = await updateAddon({
+            ...details,
+            icon: details.icon.id,
+          }))
+        : (response = await createAddon({
+            ...details,
+            icon: details.icon.id,
+          }));
+      if (response.status === 201 || response.status === 200) {
+        console.log(response.data.data);
+        onCreate(response.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
   };
 
   return (
@@ -37,7 +73,6 @@ const AddInventory: React.FC<AddInventoryProps> = ({}) => {
           width="w-full"
           placeholder="Enter Name"
         />
-        
       </div>
     </div>
   );
