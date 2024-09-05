@@ -6,6 +6,7 @@ import InventoryIcon from "../icon/Inventory";
 import DistributionIcon from "../icon/Distributions";
 import PeopleIcon from "../icon/People";
 import {useRouter} from "next/router";
+import useAuth from "@/hooks/useAuth";
 
 const items = [
   {
@@ -38,6 +39,11 @@ interface SideBarProps {}
 const SideBar: React.FC<SideBarProps> = ({}) => {
   const [active, setActive] = useState("dashboard");
   const router = useRouter();
+  const {getUser} = useAuth();
+  // alert(JSON.stringify(user));
+  useEffect(() => {
+    getUser();
+  }, []);
 
   useEffect(() => {
     const page = router.asPath.split("/").slice(1, 2)[0];
@@ -50,12 +56,14 @@ const SideBar: React.FC<SideBarProps> = ({}) => {
         <div className="p-2 rounded-lg cursor-pointer w-min">
           <BurgerIcon />
         </div>
-        <p className="text-lg text-gray-800 font-semibold md:flex hidden">STOCK MANAGER</p>
+        <p className="text-lg text-gray-800 font-semibold md:flex hidden">
+          STOCK MANAGER
+        </p>
       </div>
       <div className="flex flex-col gap-y-1">
         {items.map((item, index) => (
           <div
-          onClick={() => router.push(item.route)}
+            onClick={() => router.push(item.route)}
             key={index}
             className={`hover:bg-zinc-300/50 group rounded-lg px-2 py-2 flex flex-row space-x-3 cursor-pointer ${
               item.id === active ? "bg-zinc-300/50" : ""

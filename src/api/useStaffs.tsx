@@ -5,19 +5,19 @@ import {
 } from "@tanstack/react-query";
 import axios from "./axios";
 
-export const useInventory = (url = "") => {
+export const useStaffs = (url = "") => {
   return useQuery({
-    queryKey: ["items", url],
+    queryKey: ["staff", url],
     queryFn: () => {
-      return axios.get(url ? url : `items`);
+      return axios.get(url ? url : `staff`);
     },
     staleTime: 15 * (60 * 1000),
   });
 };
 
-export const useInfiniteInventory = (url = "items?page=1") => {
+export const useInfiniteStaffs = (url = "staff?page=1") => {
   return useInfiniteQuery({
-    queryKey: ["items", url],
+    queryKey: ["staff", url],
     initialPageParam: 0,
     queryFn: async ({pageParam, signal}) => {
       console.log("pageParam", pageParam);
@@ -34,19 +34,19 @@ export const useInfiniteInventory = (url = "items?page=1") => {
   });
 };
 
-export const useInventoryManage = () => {
+export const useStaffsManage = () => {
   const queryClient = useQueryClient();
 
-  const createInventory = (data: any) => {
+  const createStaffs = (data: any) => {
     console.log(data);
 
-    return axios.post("items", data);
+    return axios.post("staff", data);
   };
 
-  const updateInventory = (data: any) => axios.put(`items/${data.id}`, data);
+  const updateStaffs = (data: any) => axios.put(`staff/${data.id}`, data);
 
-  const updateInventoryItems = (allItems: any[]) => {
-    queryClient.setQueryData(["items", ""], (prevData: any) => {
+  const updateStaffsItems = (allItems: any[]) => {
+    queryClient.setQueryData(["staff", ""], (prevData: any) => {
       console.log(allItems, prevData);
       if (prevData) {
         let newData = JSON.parse(JSON.stringify(prevData));
@@ -57,5 +57,5 @@ export const useInventoryManage = () => {
       return prevData;
     });
   };
-  return {createInventory, updateInventory, updateInventoryItems};
+  return {createStaffs, updateStaffs, updateStaffsItems};
 };

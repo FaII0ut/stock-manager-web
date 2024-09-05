@@ -153,7 +153,7 @@ const Modal: React.FC<ModalProps> = ({
                   <Button
                     label="Cancel"
                     disabled={loading || processing}
-                    onSelect={() => {
+                    onClick={() => {
                       handleToggle();
                       setCancel(true);
                     }}
@@ -161,7 +161,7 @@ const Modal: React.FC<ModalProps> = ({
                   <Button
                     disabled={loading || processing}
                     label={btnText ? btnText : edit ? "Update" : "Add"}
-                    onSelect={() => {
+                    onClick={() => {
                       !loading && drawerOpen && setConfirm(true);
                     }}
                   />

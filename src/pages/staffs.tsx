@@ -1,3 +1,5 @@
+import useInfiniteTable from "@/api/useInfiniteTable";
+import {useInfiniteStaffs} from "@/api/useStaffs";
 import CreateStaff from "@/components/forms/CreateStaff";
 import Button from "@/components/global/Button";
 import Modal from "@/components/global/Modal";
@@ -19,19 +21,33 @@ const fields = [
     ),
   },
   {
-    display: "Designation",
-    field: "designation",
-    textClass: "text-sm text-zinc-500",
-  },
-  {
-    display: "Sid",
-    field: "sid",
-    textClass: "text-sm text-zinc-500 lowercase",
+    display: "National id",
+    field: "nid",
+    textClass: "text-sm text-zinc-500 ",
   },
 ];
 
 const Staffs: React.FC<StaffsProps> = ({}) => {
   const [show, setShow] = useState(false);
+  const [currentUrl, setCurrentUrl] = useState("");
+  const {
+    isLoading,
+    data,
+    error,
+    isFetchingNextPage,
+    fetchNextPage,
+    refetch,
+    hasNextPage,
+  } = useInfiniteStaffs(currentUrl);
+  const {onPaginate, tableData, search, setSearch, tableProps} =
+    useInfiniteTable({
+      data,
+      isFetchingNextPage,
+      fetchNextPage,
+      hasNextPage,
+      setCurrentUrl,
+      initialUrl: "staff",
+    });
 
   return (
     <>
@@ -39,24 +55,19 @@ const Staffs: React.FC<StaffsProps> = ({}) => {
         <Header hideCrumbs={true} title="Staffs">
           <Button label="Add new" onClick={() => setShow(true)} />
         </Header>
-        <Listing
-          fields={fields}
-          data={[
-            {
-              name: "Ali",
-              identifier: "A221122",
-              sid: 12,
-              designation: "Glove",
-            },
-          ]}
-        />
+        <Listing fields={fields} data={tableData} {...tableProps} />
       </div>
       <Modal
         drawerOpen={show}
         title="Create Staff"
         onClose={() => setShow(false)}
       >
-        <CreateStaff />
+        <CreateStaff
+          onCreate={() => {
+            setShow(false);
+            refetch();
+          }}
+        />
       </Modal>
     </>
   );

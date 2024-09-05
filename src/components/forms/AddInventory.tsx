@@ -1,7 +1,8 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import TextInput from "../inputs/TextInput";
 import ApiSearch from "../inputs/ApiSearch";
 import DatePicker from "../inputs/DatePicker";
+import {useInventoryManage} from "@/api/useInventory";
 
 interface AddInventoryProps {
   changed?: boolean;
@@ -12,33 +13,49 @@ interface AddInventoryProps {
   onSuccess?: (item: any) => void;
   type?: string;
   item?: any;
+  onCreate?: (item: any) => void;
 }
 
-const AddInventory: React.FC<AddInventoryProps> = ({}) => {
-  const [loading, setLoading] = useState<any>(false);
+const AddInventory: React.FC<AddInventoryProps> = ({
+  changed = false,
+  confirm = false,
+  open = false,
+  setLoading = () => {},
+  setConfirm = () => {},
+  setChanged = () => {},
+  onCreate = () => {},
+  item = {
+    id: "",
+    name: "",
+    currency: null,
+    currency_id: "",
+    amount: "",
+    icon: null,
+  },
+}) => {
   const [details, setDetails] = useState<any>({name: ""});
+  const {createInventory, updateInventory} = useInventoryManage();
 
   const handleChange = (value: any, field: string) => {
     details[field] = value;
     setDetails({...details});
   };
 
+  useEffect(() => {
+    if (!confirm) return;
+    handleSave();
+    setConfirm(false);
+  }, [confirm]);
+
   const handleSave = async () => {
     let response = {
       ...details,
-      icon: details.icon.id,
     };
     setLoading(true);
     try {
       details.id
-        ? (response = await updateAddon({
-            ...details,
-            icon: details.icon.id,
-          }))
-        : (response = await createAddon({
-            ...details,
-            icon: details.icon.id,
-          }));
+        ? (response = await updateInventory(details))
+        : (response = await createInventory(details));
       if (response.status === 201 || response.status === 200) {
         console.log(response.data.data);
         onCreate(response.data.data);
@@ -59,19 +76,33 @@ const AddInventory: React.FC<AddInventoryProps> = ({}) => {
           width="w-full"
           placeholder="Enter Name"
         />
+          <TextInput
+          title="Description"
+          onChange={(v) => handleChange(v, "description")}
+          value={details.description}
+          width="w-full"
+          placeholder="Description"
+        />
         <TextInput
           title="Item Code"
-          onChange={(v) => handleChange(v, "code")}
-          value={details.code}
+          onChange={(v) => handleChange(v, "sku")}
+          value={details.sku}
           width="w-full"
-          placeholder="Enter Name"
+          placeholder="Sku code"
+        />
+        <TextInput
+          title="Price"
+          onChange={(v) => handleChange(v, "price")}
+          value={details.price}
+          width="w-full"
+          placeholder="Enter price"
         />
         <TextInput
           title="Stock"
           onChange={(v) => handleChange(v, "stock")}
           value={details.stock}
           width="w-full"
-          placeholder="Enter Name"
+          placeholder="Enter stock"
         />
       </div>
     </div>

@@ -1,7 +1,8 @@
+import {useInfiniteDistribution} from "@/api/useDistributions";
+import useInfiniteTable from "@/api/useInfiniteTable";
 import AddDistribution from "@/components/forms/AddDistribution";
 import Button from "@/components/global/Button";
 import Modal from "@/components/global/Modal";
-import Input from "@/components/inputs/Input";
 import Header from "@/components/layout/Header";
 import Listing from "@/components/listings/Listing";
 import moment from "momnet";
@@ -12,7 +13,7 @@ interface DistributionsProps {}
 const fields = [
   {
     display: "Name",
-    field: "name",
+    field: "staff.name",
     element: (value: string, {name, identifier}: any) => (
       <div className="px-8 py-4 flex flex-col">
         <p className="text-zinc-900 text-sm font-medium">{value}</p>
@@ -22,7 +23,7 @@ const fields = [
   },
   {
     display: "Item",
-    field: "item",
+    field: "item.name",
     textClass: "text-sm text-zinc-500",
   },
   {
@@ -32,7 +33,7 @@ const fields = [
   },
   {
     display: "Issued on",
-    field: "issued_on",
+    field: "created_at",
     element: (value: string) => (
       <div className="px-8 py-4 flex flex-col">
         <p className="text-zinc-500 text-xs font-medium">
@@ -45,31 +46,45 @@ const fields = [
 
 const Distributions: React.FC<DistributionsProps> = ({}) => {
   const [show, setShow] = useState(false);
+  const [currentUrl, setCurrentUrl] = useState("");
+  const {
+    isLoading,
+    data,
+    error,
+    isFetchingNextPage,
+    fetchNextPage,
+    refetch,
+    hasNextPage,
+  } = useInfiniteDistribution(currentUrl);
+  const {onPaginate, tableData, search, setSearch, tableProps} =
+    useInfiniteTable({
+      data,
+      isFetchingNextPage,
+      fetchNextPage,
+      hasNextPage,
+      setCurrentUrl,
+      initialUrl: "dispatches",
+    });
+
   return (
     <>
       <div className="bg-white w-full  h-full ">
         <Header hideCrumbs={true} title="Distributions">
           <Button label="Add new" onClick={() => setShow(true)} />
         </Header>
-          <Listing
-            fields={fields}
-            data={[
-              {
-                name: "Ali",
-                identifier: "A221122",
-                quantity: 12,
-                item: "Glove",
-                issued_on: new Date(),
-              },
-            ]}
-          />
-˝      </div>
+        <Listing fields={fields} data={tableData} {...tableProps} />˝{" "}
+      </div>
       <Modal
         drawerOpen={show}
         title="Add distribution"
         onClose={() => setShow(false)}
       >
-        <AddDistribution />
+        <AddDistribution
+          onCreate={() => {
+            setShow(false);
+            refetch();
+          }}
+        />
       </Modal>
     </>
   );
