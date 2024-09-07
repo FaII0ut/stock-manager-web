@@ -22,7 +22,6 @@ const AddInventory: React.FC<AddInventoryProps> = ({
   open = false,
   setLoading = () => {},
   setConfirm = () => {},
-  setChanged = () => {},
   onCreate = () => {},
   item = {
     id: "",

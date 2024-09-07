@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import Input from "../inputs/Input";
 import BurgerIcon from "../icon/Burger";
 import DashboardIcon from "../icon/Dashboard";
 import InventoryIcon from "../icon/Inventory";

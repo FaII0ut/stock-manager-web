@@ -1,5 +1,4 @@
 import BarChart from "@/components/charts/BarChart";
-import DoughChart from "@/components/charts/DoughChart";
 import LineChart from "@/components/charts/LineChart";
 import Button from "@/components/global/Button";
 import Header from "@/components/layout/Header";
