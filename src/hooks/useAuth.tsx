@@ -29,10 +29,10 @@ const useAuth = () => {
       });
       console.log(response);
       if (response.status === 200) {
-        setUser(response.data.data.user);
-        setToken(response.data.data.token);
-        setSetting(response.data.data);
-        localStorage.setItem("token", response.data.data.token);
+        setUser(response.data.data.data.user);
+        setToken(response.data.data.data.token);
+        setSetting(response.data.data.data);
+        localStorage.setItem("token", response.data.data.data.token);
         Router.push("/");
       } else {
         errorMsg();
