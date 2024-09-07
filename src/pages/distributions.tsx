@@ -5,7 +5,6 @@ import Button from "@/components/global/Button";
 import Modal from "@/components/global/Modal";
 import Header from "@/components/layout/Header";
 import Listing from "@/components/listings/Listing";
-import moment from "momnet";
 import React, {useState} from "react";
 
 interface DistributionsProps {}
@@ -37,7 +36,8 @@ const fields = [
     element: (value: string) => (
       <div className="px-8 py-4 flex flex-col">
         <p className="text-zinc-500 text-xs font-medium">
-          {moment(value).format("DD MMM, YYYY")}
+          {/* {moment(value).format("DD MMM, YYYY")} */}
+          {value}
         </p>
       </div>
     ),
