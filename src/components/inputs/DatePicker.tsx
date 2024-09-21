@@ -1,6 +1,7 @@
 import {Popover, Transition} from "@headlessui/react";
 import React, {Fragment, useRef, useState} from "react";
 import moment from "moment";
+import CalendarIcon from "../icon/Calendar";
 const {Calendar} = require("@fall-out/react-calendar");
 
 interface DatePickerProps {
@@ -23,7 +24,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
   disabled = false,
   extraClasses,
   title,
-  value = "",
+  value = moment().format("YYYY-MM-DD"),
   direction = "",
   width = "max-w-[336px]",
   displayFormat = "MMM, DD YYYY",
@@ -83,10 +84,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
       disabled ? "b-200" : " focus-within:border-primary-500 b-200"
     }`,
     delete: `border ${disabled ? "b-200" : " border-red-600"}`,
-    ghost: `border ${
-      disabled
-        ? "b-200" : "b-200 hover:b-600"
-    }`,
+    ghost: `border ${disabled ? "b-200" : "b-200 hover:b-600"}`,
   };
 
   const textTheme: any = {
@@ -142,7 +140,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
                   disabled ? "cursor-not-allowed" : ""
                 }`}
               >
-                x
+                <CalendarIcon />
               </Popover.Button>
               <input
                 className={`w-full focus:outline-none  px-3 py-2 pl-0 bg-white text-800`}

@@ -25,11 +25,11 @@ export const useInfiniteDistribution = (url = "dispatches?page=1") => {
       return res.data;
     },
     getPreviousPageParam: (firstPage: any) => {
-      return firstPage?.prev_page_url ?? undefined;
+      return firstPage?.links?.prev ?? undefined;
     },
     getNextPageParam: (lastPage: any) => {
       // console.log(lastPage?.links?.next)
-      return lastPage?.next_page_url ?? undefined;
+      return lastPage?.links?.next ?? undefined;
     },
   });
 };
@@ -43,7 +43,11 @@ export const useDistributionManage = () => {
     return axios.post("dispatches", data);
   };
 
-  const updateDistribution = (data: any) => axios.put(`dispatches/${data.id}`, data);
+  const updateDistribution = (data: any) =>
+    axios.put(`dispatches/${data.id}`, data);
+
+  const deleteDistribution = (data: any) =>
+    axios.delete(`dispatches/${data.id}`);
 
   const updateDistributionItems = (allItems: any[]) => {
     queryClient.setQueryData(["dispatches", ""], (prevData: any) => {
@@ -57,5 +61,10 @@ export const useDistributionManage = () => {
       return prevData;
     });
   };
-  return {createDistribution, updateDistribution, updateDistributionItems};
+  return {
+    createDistribution,
+    updateDistribution,
+    deleteDistribution,
+    updateDistributionItems,
+  };
 };

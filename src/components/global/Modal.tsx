@@ -96,7 +96,10 @@ const Modal: React.FC<ModalProps> = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="absolute inset-0 bg-gray-100 dark:bg-opacity-70 bg-opacity-65 transition-opacity" />
+            <div
+              onClick={() => onClose()}
+              className="absolute inset-0 bg-gray-100 dark:bg-opacity-70 bg-opacity-65 transition-opacity"
+            />
           </Transition.Child>
           <div className="fixed inset-y-0 right-0 max-w-full flex">
             <Transition.Child
@@ -137,11 +140,20 @@ const Modal: React.FC<ModalProps> = ({
                         onClose();
                       }}
                     >
-                      X
-                      {/* <Icon
-                        name="actions/Close"
-                        stroke={dark ? "#FFF" : "#737373"}
-                      /> */}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width={40}
+                        height={40}
+                        fill="none"
+                      >
+                        <path
+                          stroke="#000"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1.667}
+                          d="M25 15 15 25m0-10 10 10"
+                        />
+                      </svg>
                     </button>
                   </div>
                   {React.cloneElement(children, {...props})}
@@ -152,6 +164,7 @@ const Modal: React.FC<ModalProps> = ({
                 >
                   <Button
                     label="Cancel"
+                    widthClass="bg-gray-300/80 text-zinc-800 hover:bg-gray-300"
                     disabled={loading || processing}
                     onClick={() => {
                       handleToggle();

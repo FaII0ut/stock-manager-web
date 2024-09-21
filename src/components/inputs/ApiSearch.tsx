@@ -3,6 +3,7 @@ import React, {Fragment, useDeferredValue, useEffect, useState} from "react";
 // import Icon from '../icon/Icon'
 import dynamic from "next/dynamic";
 import axios from "@/api/axios";
+import ChevDown from "../icon/ChevDown";
 
 interface item {
   id: string;
@@ -186,7 +187,7 @@ const ApiSearch: React.FC<ApiSearchProps> = ({
               placeholder={placeholder}
             />
             <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
-              {/* <Icon name="actions/ChevronDown" stroke="#737373" /> */}v
+              <ChevDown />
             </Combobox.Button>
           </div>
           <Transition
@@ -214,13 +215,13 @@ const ApiSearch: React.FC<ApiSearchProps> = ({
                       className={({active}) =>
                         `flex item-center px-4 outline-none py-2 rounded cursor-pointer gap-2 ${
                           active ? "bg-100" : ""
-                        } ${selected.id == item.id ? "bg-100" : ""}`
+                        } ${selected?.id == item.id ? "bg-100" : ""}`
                       }
                     >
                       <p className="text-sm text-900">
                         {item.display_name ? item.display_name : item.name}
                       </p>
-                      {selected.id == item.id ? (
+                      {selected?.id == item.id ? (
                         <div className="flex ml-auto items-center">X</div>
                       ) : null}
                     </Combobox.Option>

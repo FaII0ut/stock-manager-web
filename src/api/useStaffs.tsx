@@ -25,11 +25,11 @@ export const useInfiniteStaffs = (url = "staff?page=1") => {
       return res.data;
     },
     getPreviousPageParam: (firstPage: any) => {
-      return firstPage?.prev_page_url ?? undefined;
+      return firstPage?.links?.prev ?? undefined;
     },
     getNextPageParam: (lastPage: any) => {
       // console.log(lastPage?.links?.next)
-      return lastPage?.next_page_url ?? undefined;
+      return lastPage?.links?.next ?? undefined;
     },
   });
 };

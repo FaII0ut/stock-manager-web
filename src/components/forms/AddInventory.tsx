@@ -32,7 +32,7 @@ const AddInventory: React.FC<AddInventoryProps> = ({
     icon: null,
   },
 }) => {
-  const [details, setDetails] = useState<any>({name: ""});
+  const [details, setDetails] = useState<any>(item);
   const {createInventory, updateInventory} = useInventoryManage();
 
   const handleChange = (value: any, field: string) => {

@@ -25,11 +25,11 @@ export const useInfiniteInventory = (url = "items?page=1") => {
       return res.data;
     },
     getPreviousPageParam: (firstPage: any) => {
-      return firstPage?.prev_page_url ?? undefined;
+      return firstPage?.links?.prev ?? undefined;
     },
     getNextPageParam: (lastPage: any) => {
       // console.log(lastPage?.links?.next)
-      return lastPage?.next_page_url ?? undefined;
+      return lastPage?.links?.next ?? undefined;
     },
   });
 };
@@ -45,6 +45,9 @@ export const useInventoryManage = () => {
 
   const updateInventory = (data: any) => axios.put(`items/${data.id}`, data);
 
+  const deleteInventoryItem = (data: any) =>
+    axios.delete(`items/${data.id}`);
+
   const updateInventoryItems = (allItems: any[]) => {
     queryClient.setQueryData(["items", ""], (prevData: any) => {
       console.log(allItems, prevData);
@@ -57,5 +60,10 @@ export const useInventoryManage = () => {
       return prevData;
     });
   };
-  return {createInventory, updateInventory, updateInventoryItems};
+  return {
+    createInventory,
+    updateInventory,
+    updateInventoryItems,
+    deleteInventoryItem,
+  };
 };

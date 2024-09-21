@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import InView from "../global/InView";
 
 interface ListingProps {
   fields: field[];
-  actions?: string[];
+  actions?: any[];
   showChevron?: boolean;
   handleAction?: (action: string, item: object) => void;
   onRowClick?: (item: object) => void;
@@ -108,9 +108,7 @@ const Listing: React.FC<ListingProps> = ({
   return (
     // removed overflow-hidden
     <div
-      className={`relative w-full ${
-        showOverflow ? "" : "overflow-hidden"
-      } `}
+      className={`relative w-full ${showOverflow ? "" : "overflow-hidden"} `}
     >
       <table className="w-full ">
         {heading.length ? (
@@ -148,7 +146,7 @@ const Listing: React.FC<ListingProps> = ({
                     containerClasses,
                     headerClass = "flex justify-start px-4 py-3",
                   }: field,
-                  index,
+                  index
                 ) => (
                   <th key={index + "h"} className={`${containerClasses}`}>
                     {header ? (
@@ -161,7 +159,7 @@ const Listing: React.FC<ListingProps> = ({
                       </div>
                     )}
                   </th>
-                ),
+                )
               )}
               {actions.length ? <th key={"actions"}></th> : null}
               {showChevron ? <th key={"chevron"}></th> : null}
@@ -185,7 +183,7 @@ const Listing: React.FC<ListingProps> = ({
                     containerClass = "flex px-8 py-5 ",
                     textClass = "text-zinc-400 text-sm group-hover:text-zinc-900",
                   }: field,
-                  index,
+                  index
                 ) => (
                   <td key={index + "f"}>
                     {element ? (
@@ -195,7 +193,7 @@ const Listing: React.FC<ListingProps> = ({
                           ...item,
                           index: dataIndex,
                         },
-                        disableCopy,
+                        disableCopy
                       )
                     ) : (
                       <div className={`${containerClass}`}>
@@ -205,20 +203,21 @@ const Listing: React.FC<ListingProps> = ({
                       </div>
                     )}
                   </td>
-                ),
+                )
               )}
               {actions.length ? (
                 <td>
                   <div className="flex gap-4 justify-end pr-4 group-hover:opacity-100 opacity-0">
-                    {actions.map((action: string, index) => (
+                    {actions.map(({icon, isVisible, action}: any, index) => (
                       <div
                         key={index + "a"}
                         className="flex items-center hover:bg-zinc-100 w-10 h-10 justify-center rounded transition-colors duration-300"
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleAction(action, item);
+                          action(item);
                         }}
                       >
+                        {icon}
                         {/* <Icon name={`actions/${action}`} stroke="#737373" /> */}
                       </div>
                     ))}

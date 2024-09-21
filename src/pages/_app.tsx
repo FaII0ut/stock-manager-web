@@ -6,6 +6,7 @@ import {StoreProvider} from "easy-peasy";
 import store from "@/store";
 import {useRouter} from "next/router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ConfirmDialog from "@/components/global/ConfirmDialog";
 
 export default function App({Component, pageProps}: AppProps) {
   const router = useRouter();
@@ -29,6 +30,7 @@ export default function App({Component, pageProps}: AppProps) {
             <Component {...pageProps} />
           </ScreenLayout>
         )}
+        <ConfirmDialog open={true} />
       </QueryClientProvider>
     </StoreProvider>
   );

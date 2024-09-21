@@ -1,10 +1,17 @@
-import {useInfiniteDistribution} from "@/api/useDistributions";
+import {
+  useDistributionManage,
+  useInfiniteDistribution,
+} from "@/api/useDistributions";
 import useInfiniteTable from "@/api/useInfiniteTable";
 import AddDistribution from "@/components/forms/AddDistribution";
 import Button from "@/components/global/Button";
 import Modal from "@/components/global/Modal";
+import DeleteIcon from "@/components/icon/actions/Delete";
+import EditIcon from "@/components/icon/actions/Edit";
 import Header from "@/components/layout/Header";
 import Listing from "@/components/listings/Listing";
+import useConfirmation from "@/hooks/useConfirmation";
+import moment from "moment";
 import React, {useState} from "react";
 
 interface DistributionsProps {}
@@ -37,7 +44,8 @@ const fields = [
       <div className="px-8 py-4 flex flex-col">
         <p className="text-zinc-500 text-xs font-medium">
           {/* {moment(value).format("DD MMM, YYYY")} */}
-          {value}
+          {moment(value).format("DD-MMM-YYYY")}
+          {/* {value} */}
         </p>
       </div>
     ),
@@ -46,7 +54,10 @@ const fields = [
 
 const Distributions: React.FC<DistributionsProps> = ({}) => {
   const [show, setShow] = useState(false);
+  const [selectedItem, setSelectedItem] = useState();
+  const {confirm} = useConfirmation();
   const [currentUrl, setCurrentUrl] = useState("");
+  const {deleteDistribution} = useDistributionManage();
   const {
     isLoading,
     data,
@@ -66,13 +77,44 @@ const Distributions: React.FC<DistributionsProps> = ({}) => {
       initialUrl: "dispatches",
     });
 
+  const actions = [
+    {
+      icon: <DeleteIcon />,
+      isVisible: () => true,
+      action: (item: any) =>
+        confirm({
+          onCancel: () => {
+            return true;
+          },
+          onConfirm: async () => {
+            await deleteDistribution(item);
+            refetch();
+          },
+        }),
+    },
+    {
+      icon: <EditIcon />,
+      isVisible: () => true,
+      action: (item: any) => {
+        setSelectedItem(item);
+        setShow(true);
+      },
+    },
+  ];
+
   return (
     <>
       <div className="bg-white w-full  h-full ">
         <Header hideCrumbs={true} title="Distributions">
           <Button label="Add new" onClick={() => setShow(true)} />
         </Header>
-        <Listing fields={fields} data={tableData} {...tableProps} />˝{" "}
+        <Listing
+          actions={actions}
+          fields={fields}
+          data={tableData}
+          {...tableProps}
+        />
+        ˝{" "}
       </div>
       <Modal
         drawerOpen={show}
@@ -80,6 +122,7 @@ const Distributions: React.FC<DistributionsProps> = ({}) => {
         onClose={() => setShow(false)}
       >
         <AddDistribution
+          item={selectedItem}
           onCreate={() => {
             setShow(false);
             refetch();
