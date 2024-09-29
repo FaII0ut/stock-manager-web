@@ -163,7 +163,7 @@ const Listing: React.FC<ListingProps> = ({
                   </th>
                 )
               )}
-              {user?.name === "Admin" && actions.length ? <th key={"actions"}></th> : null}
+              {actions.length ? <th key={"actions"}></th> : null}
               {showChevron ? <th key={"chevron"}></th> : null}
             </tr>
           </thead>
@@ -207,7 +207,7 @@ const Listing: React.FC<ListingProps> = ({
                   </td>
                 )
               )}
-              {user?.name === "Admin" && actions.length ? (
+              {actions.length ? (
                 <td>
                   <div className="flex gap-4 justify-end pr-4 group-hover:opacity-100 opacity-0">
                     {actions.map(({icon, isVisible, action}: any, index) => (

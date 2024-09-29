@@ -10,6 +10,7 @@ import DeleteIcon from "@/components/icon/actions/Delete";
 import EditIcon from "@/components/icon/actions/Edit";
 import Header from "@/components/layout/Header";
 import Listing from "@/components/listings/Listing";
+import {checkPermissions} from "@/helper/PermissionHelper";
 import useConfirmation from "@/hooks/useConfirmation";
 import moment from "moment";
 import React, {useState} from "react";
@@ -38,13 +39,17 @@ const fields = [
     textClass: "text-sm text-zinc-500 lowercase",
   },
   {
+    display: "By",
+    field: "user.name",
+  },
+  {
     display: "Issued on",
     field: "created_at",
     element: (value: string) => (
       <div className="px-8 py-4 flex flex-col">
         <p className="text-zinc-500 text-xs font-medium">
           {/* {moment(value).format("DD MMM, YYYY")} */}
-          {moment(value).format("DD-MMM-YYYY")}
+          {moment(value).format("DD-MMM-YYYY HH:mm:ss")}
           {/* {value} */}
         </p>
       </div>
@@ -77,36 +82,49 @@ const Distributions: React.FC<DistributionsProps> = ({}) => {
       initialUrl: "dispatches",
     });
 
-  const actions = [
-    {
-      icon: <DeleteIcon />,
-      isVisible: () => true,
-      action: (item: any) =>
-        confirm({
-          onCancel: () => {
-            return true;
+  const actions: any = [
+    ...(checkPermissions("delete-inventory")
+      ? [
+          {
+            icon: <DeleteIcon />,
+            isVisible: () => true,
+            action: (item: any) =>
+              confirm({
+                onCancel: () => {
+                  return true;
+                },
+                onConfirm: async () => {
+                  await deleteDistribution(item);
+                  refetch();
+                },
+              }),
           },
-          onConfirm: async () => {
-            await deleteDistribution(item);
-            refetch();
+        ]
+      : []), // If false, return an empty array
+
+    ...(checkPermissions("edit-inventory")
+      ? [
+          {
+            icon: <EditIcon />,
+            isVisible: () => true,
+            action: (item: any) => {
+              setSelectedItem(item);
+              setShow(true);
+            },
           },
-        }),
-    },
-    {
-      icon: <EditIcon />,
-      isVisible: () => true,
-      action: (item: any) => {
-        setSelectedItem(item);
-        setShow(true);
-      },
-    },
+        ]
+      : []), // If false, return an empty array
   ];
 
   return (
     <>
       <div className="bg-white w-full  h-full ">
         <Header hideCrumbs={true} title="Distributions">
-          <Button label="Add new" onClick={() => setShow(true)} />
+          {checkPermissions("add-staff") ? (
+            <Button label="Add new" onClick={() => setShow(true)} />
+          ) : (
+            <></>
+          )}
         </Header>
         <Listing
           actions={actions}
@@ -114,7 +132,6 @@ const Distributions: React.FC<DistributionsProps> = ({}) => {
           data={tableData}
           {...tableProps}
         />
-        ˝{" "}
       </div>
       <Modal
         drawerOpen={show}

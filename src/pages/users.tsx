@@ -21,8 +21,8 @@ const fields = [
     ),
   },
   {
-    display: "National id",
-    field: "nid",
+    display: "Email",
+    field: "email",
     textClass: "text-sm text-zinc-500 ",
   },
 ];

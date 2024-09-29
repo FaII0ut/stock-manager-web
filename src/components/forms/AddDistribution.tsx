@@ -3,6 +3,7 @@ import TextInput from "../inputs/TextInput";
 import ApiSearch from "../inputs/ApiSearch";
 import DatePicker from "../inputs/DatePicker";
 import {useDistributionManage} from "@/api/useDistributions";
+import moment from "moment";
 
 interface AddDistributionProps {
   changed?: boolean;
@@ -87,8 +88,12 @@ const AddDistribution: React.FC<AddDistributionProps> = ({
         <DatePicker
           title="Transaction Date"
           width="w-full"
+          displayFormat="MMM, DD YYYY HH:mm:ss"
+          outputFormat="YYYY-MM-DD HH:mm:ss"
           onChange={(v) => handleChange(v, "date")}
-          value={details.date}
+          value={
+            details.date ? details.date : moment().format("YYYY-MM-DD HH:mm:ss")
+          }
         />
         {/* <Input
           title="Benefit"

@@ -5,6 +5,7 @@ import Button from "@/components/global/Button";
 import Modal from "@/components/global/Modal";
 import Header from "@/components/layout/Header";
 import Listing from "@/components/listings/Listing";
+import {checkPermissions} from "@/helper/PermissionHelper";
 import React, {useState} from "react";
 
 interface StaffsProps {}
@@ -53,7 +54,11 @@ const Staffs: React.FC<StaffsProps> = ({}) => {
     <>
       <div className="bg-white w-full  h-full ">
         <Header hideCrumbs={true} title="Staffs">
-          <Button label="Add new" onClick={() => setShow(true)} />
+          {checkPermissions("add-staff") ? (
+            <Button label="Add new" onClick={() => setShow(true)} />
+          ) : (
+            <></>
+          )}
         </Header>
         <Listing fields={fields} data={tableData} {...tableProps} />
       </div>

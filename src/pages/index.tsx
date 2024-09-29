@@ -1,6 +1,8 @@
 import BarChart from "@/components/charts/BarChart";
 import LineChart from "@/components/charts/LineChart";
+import ExportInventory from "@/components/forms/ExportInventory";
 import Button from "@/components/global/Button";
+import Modal from "@/components/global/Modal";
 import Header from "@/components/layout/Header";
 import React, {useState} from "react";
 
@@ -38,6 +40,17 @@ const Home: React.FC<HomeProps> = ({}) => {
           </div>
         </div>
       </div>
+      <Modal
+        drawerOpen={show}
+        title="Add distribution"
+        onClose={() => setShow(false)}
+      >
+        <ExportInventory
+          onCreate={() => {
+            setShow(false);
+          }}
+        />
+      </Modal>
     </div>
   );
 };

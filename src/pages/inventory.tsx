@@ -8,6 +8,7 @@ import DeleteIcon from "@/components/icon/actions/Delete";
 import EditIcon from "@/components/icon/actions/Edit";
 import Header from "@/components/layout/Header";
 import Listing from "@/components/listings/Listing";
+import {checkPermissions} from "@/helper/PermissionHelper";
 import useConfirmation from "@/hooks/useConfirmation";
 import {useStoreActions} from "@/store/hooks";
 import React, {useState} from "react";
@@ -64,36 +65,48 @@ const Inventory: React.FC<InventoryProps> = ({}) => {
       initialUrl: "items",
     });
 
-  const actions = [
-    {
-      icon: <DeleteIcon />,
-      isVisible: () => true,
-      action: (item: any) =>
-        confirm({
-          onCancel: () => {
-            return true;
+  const actions: any = [
+    ...(checkPermissions("delete-inventory")
+      ? [
+          {
+            icon: <DeleteIcon />,
+            isVisible: () => true,
+            action: (item: any) =>
+              confirm({
+                onCancel: () => {
+                  return true;
+                },
+                onConfirm: async () => {
+                  await deleteInventoryItem(item);
+                  refetch();
+                },
+              }),
           },
-          onConfirm: async () => {
-            await deleteInventoryItem(item);
-            refetch();
+        ]
+      : []),
+    ...(checkPermissions("edit-inventory")
+      ? [
+          {
+            icon: <EditIcon />,
+            isVisible: () => true,
+            action: (item: any) => {
+              setSelectedItem(item);
+              setShow(true);
+            },
           },
-        }),
-    },
-    {
-      icon: <EditIcon />,
-      isVisible: () => true,
-      action: (item: any) => {
-        setSelectedItem(item);
-        setShow(true);
-      },
-    },
+        ]
+      : []),
   ];
 
   return (
     <>
       <div className="bg-white w-full  h-full ">
         <Header hideCrumbs={true} title="Invetory">
-          <Button label="Add new" onClick={() => setShow(true)} />
+          {checkPermissions("add-staff") ? (
+            <Button label="Add new" onClick={() => setShow(true)} />
+          ) : (
+            <></>
+          )}
         </Header>
         <Listing
           fields={fields}

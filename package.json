@@ -21,7 +21,8 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-inview": "^4.5.1",
-    "react-toastify": "^10.0.5"
+    "react-toastify": "^10.0.5",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/node": "^20",

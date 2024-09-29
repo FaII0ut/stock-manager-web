@@ -6,6 +6,7 @@ import DistributionIcon from "../icon/Distributions";
 import PeopleIcon from "../icon/People";
 import {useRouter} from "next/router";
 import useAuth from "@/hooks/useAuth";
+import {checkPermissions} from "@/helper/PermissionHelper";
 
 const items = [
   {
@@ -45,11 +46,8 @@ interface SideBarProps {}
 const SideBar: React.FC<SideBarProps> = ({}) => {
   const [active, setActive] = useState("dashboard");
   const router = useRouter();
-  const {getUser, user} = useAuth();
+  const {user} = useAuth();
   // alert(JSON.stringify(user));
-  useEffect(() => {
-    getUser();
-  }, []);
 
   useEffect(() => {
     const page = router.asPath.split("/").slice(1, 2)[0];
@@ -67,7 +65,7 @@ const SideBar: React.FC<SideBarProps> = ({}) => {
         </p>
       </div>
       <div className="flex flex-col gap-y-1">
-        {[...items, ...(user?.name === "Admin" ? [setting] : [])].map(
+        {[...items, ...(checkPermissions("settings") ? [setting] : [])].map(
           (item, index) => (
             <div
               onClick={() => router.push(item.route)}
