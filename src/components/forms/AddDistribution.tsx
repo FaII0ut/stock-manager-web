@@ -23,7 +23,7 @@ const AddDistribution: React.FC<AddDistributionProps> = ({
   setLoading = () => {},
   setConfirm = () => {},
   onCreate = () => {},
-  item = {name: ""},
+  item = {},
 }) => {
   const [details, setDetails] = useState<any>(item);
   const {createDistribution, updateDistribution} = useDistributionManage();

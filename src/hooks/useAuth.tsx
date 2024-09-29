@@ -27,12 +27,12 @@ const useAuth = () => {
         email: email,
         password: password,
       });
-      console.log(response.data.data);
+      console.log(response.data);
       if (response.status === 200) {
-        setUser(response.data.data.user);
-        setToken(response.data.data.token);
-        setSetting(response.data.data);
-        localStorage.setItem("token", response.data.data.token);
+        setUser(response.data.user);
+        setToken(response.data.token);
+        setSetting(response.data);
+        localStorage.setItem("token", response.data.token);
         Router.push("/");
       } else {
         errorMsg();
@@ -87,7 +87,7 @@ const useAuth = () => {
       const response = await axios.get("auth/me");
       if (response.status === 200) {
         setUser(response.data.data.user);
-        setToken(response.data.data.token);
+        // setToken(response.data.data.token);
         setSetting(response.data.data);
         router.asPath === "login" && Router.push("/");
       } else {
