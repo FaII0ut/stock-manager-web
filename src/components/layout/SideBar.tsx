@@ -33,12 +33,19 @@ const items = [
     route: "/inventory",
   },
 ];
+
+const setting: any = {
+  id: "users",
+  icon: <InventoryIcon />,
+  name: "Users",
+  route: "/users",
+};
 interface SideBarProps {}
 
 const SideBar: React.FC<SideBarProps> = ({}) => {
   const [active, setActive] = useState("dashboard");
   const router = useRouter();
-  const {getUser} = useAuth();
+  const {getUser, user} = useAuth();
   // alert(JSON.stringify(user));
   useEffect(() => {
     getUser();
@@ -60,26 +67,28 @@ const SideBar: React.FC<SideBarProps> = ({}) => {
         </p>
       </div>
       <div className="flex flex-col gap-y-1">
-        {items.map((item, index) => (
-          <div
-            onClick={() => router.push(item.route)}
-            key={index}
-            className={`hover:bg-zinc-300/50 group rounded-lg px-2 py-2 flex flex-row space-x-3 cursor-pointer ${
-              item.id === active ? "bg-zinc-300/50" : ""
-            }`}
-          >
-            {item.icon}
-            <p className="text-zinc-800 group-hover:text-cyan-600">
-              {item.name}
-            </p>
-          </div>
-        ))}
+        {[...items, ...(user?.name === "Admin" ? [setting] : [])].map(
+          (item, index) => (
+            <div
+              onClick={() => router.push(item.route)}
+              key={index}
+              className={`hover:bg-zinc-300/50 group rounded-lg px-2 py-2 flex flex-row space-x-3 cursor-pointer ${
+                item.id === active ? "bg-zinc-300/50" : ""
+              }`}
+            >
+              {item.icon}
+              <p className="text-zinc-800 group-hover:text-cyan-600">
+                {item.name}
+              </p>
+            </div>
+          )
+        )}
       </div>
       <div className="w-full h-12 rounded-lg absolute bottom-2 left-2 flex flex-row space-x-2">
         <div className="w-10 h-10 rounded-full bg-cyan-200" />
         <div className="md:flex hidden flex-col">
-          <p className="text-sm text-zinc-700">Abdulla Naseer</p>
-          <p className="text-xs text-zinc-500">+960 9928191</p>
+          <p className="text-sm text-zinc-700">{user?.name}</p>
+          <p className="text-xs text-zinc-500">{user?.email}</p>
         </div>
       </div>
       {/* <Input /> */}

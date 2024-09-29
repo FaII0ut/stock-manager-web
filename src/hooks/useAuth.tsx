@@ -1,9 +1,9 @@
-import Router, { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import Router, {useRouter} from "next/router";
+import {useEffect, useState} from "react";
 import dynamic from "next/dynamic";
 import axios from "../api/axios";
-import { useStoreActions, useStoreState } from "../store/hooks";
-import { toast } from "react-toastify";
+import {useStoreActions, useStoreState} from "../store/hooks";
+import {toast} from "react-toastify";
 
 const useAuth = () => {
   const setSetting = useStoreActions((action) => action.user.setSetting);
@@ -29,7 +29,7 @@ const useAuth = () => {
       });
       console.log(response.data);
       if (response.status === 200) {
-        setUser(response.data.user);
+        setUser(response.data);
         setToken(response.data.token);
         setSetting(response.data);
         localStorage.setItem("token", response.data.token);
@@ -60,15 +60,13 @@ const useAuth = () => {
       return;
     }
 
-   
     try {
-      await axios.get('sanctum/csrf-cookie');
+      await axios.get("sanctum/csrf-cookie");
     } catch (error) {
       console.error("Failed to fetch CSRF token:", error);
       // Router.push("/login");
     }
   };
-
 
   // logout function
   const logout = async () => {
@@ -86,9 +84,11 @@ const useAuth = () => {
       await csrf();
       const response = await axios.get("auth/me");
       if (response.status === 200) {
-        setUser(response.data.data.user);
+        setUser(response.data.data);
+        console.log(response.data.data);
+
         // setToken(response.data.data.token);
-        setSetting(response.data.data);
+        setSetting(response.data);
         router.asPath === "login" && Router.push("/");
       } else {
         localStorage.removeItem("token");
@@ -102,6 +102,7 @@ const useAuth = () => {
     login,
     logout,
     getUser,
+    user,
   };
 };
 

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import InView from "../global/InView";
+import useAuth from "@/hooks/useAuth";
 
 interface ListingProps {
   fields: field[];
@@ -52,6 +53,7 @@ const Listing: React.FC<ListingProps> = ({
   const [list, setList] = useState<any[]>(data);
   const [selected, setSelected] = useState<any[]>([]);
   const [remove, setRemove] = useState<any[]>([]);
+  const {user} = useAuth();
 
   const getValue = (id: string, row: object) => {
     var attributes = id.split(".");
@@ -161,7 +163,7 @@ const Listing: React.FC<ListingProps> = ({
                   </th>
                 )
               )}
-              {actions.length ? <th key={"actions"}></th> : null}
+              {user?.name === "Admin" && actions.length ? <th key={"actions"}></th> : null}
               {showChevron ? <th key={"chevron"}></th> : null}
             </tr>
           </thead>
@@ -205,7 +207,7 @@ const Listing: React.FC<ListingProps> = ({
                   </td>
                 )
               )}
-              {actions.length ? (
+              {user?.name === "Admin" && actions.length ? (
                 <td>
                   <div className="flex gap-4 justify-end pr-4 group-hover:opacity-100 opacity-0">
                     {actions.map(({icon, isVisible, action}: any, index) => (

@@ -53,7 +53,7 @@ const Users: React.FC<UsersProps> = ({}) => {
     <>
       <div className="bg-white w-full  h-full ">
         <Header hideCrumbs={true} title="Users">
-          {/* <Button label="Add new" onClick={() => setShow(true)} /> */}
+          <Button label="Add new" onClick={() => setShow(true)} />
         </Header>
         <Listing fields={fields} data={tableData} {...tableProps} />
       </div>

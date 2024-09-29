@@ -66,23 +66,23 @@ const CreateUser: React.FC<CreateUserProps> = ({
           placeholder="Enter Name"
         />
         <TextInput
-          title="USer Code"
-          onChange={(v) => handleChange(v, "code")}
-          value={details.code}
+          title="Email"
+          onChange={(v) => handleChange(v, "email")}
+          value={details.email}
           width="w-full"
           placeholder="Enter Name"
         />
         <TextInput
-          title="Nid"
-          onChange={(v) => handleChange(v, "nid")}
-          value={details.nid}
+          title="Password"
+          onChange={(v) => handleChange(v, "password")}
+          value={details.password}
           width="w-full"
           placeholder="Enter Name"
         />
         <TextInput
-          title="Designation"
-          onChange={(v) => handleChange(v, "designation")}
-          value={details.designation}
+          title="C Password"
+          onChange={(v) => handleChange(v, "password_confirmation")}
+          value={details.password_confirmation}
           width="w-full"
           placeholder="Enter Name"
         />
