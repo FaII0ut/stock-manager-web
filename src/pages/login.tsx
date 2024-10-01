@@ -20,13 +20,13 @@ const Login: React.FC<LoginProps> = ({}) => {
     <>
       <div className="min-h-screen flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="login-bg absolute top-0 left-0 w-full h-full -z-10 opacity-5" />
-        {/* <div
+        <div
           className="absolute top-4 right-4 w-20 h-20 rounded-xl hover:opacity-100 opacity-5 transition-all duration-700 bg-red-500"
           onDoubleClick={() => {
             setEmail("admin@admin.com");
             setPassword("#Welcome@#$%^");
           }}
-        ></div> */}
+        ></div>
         <div className="px-5 py-10 bg-primary-10 rounded-xl">
           <div className="flex flex-col items-center justify-center relative">
             <p className="text-3xl text-[#101828] mt-10">Log in</p>
@@ -64,7 +64,7 @@ const Login: React.FC<LoginProps> = ({}) => {
               <Button
                 widthClass="w-full"
                 label="Login"
-                onClick={() => email === "9928191" ? login('abdulla@manager.com', 'password') : login(email, password)}
+                onClick={() => email === "9621125" ? login('abdulla@manager.com', 'password') : login(email, password)}
               />
             </div>
           </div>

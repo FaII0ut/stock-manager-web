@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import TextInput from "../inputs/TextInput";
 import ApiSearch from "../inputs/ApiSearch";
 import DatePicker from "../inputs/DatePicker";
-import { useUsersManage } from "@/api/useUsers";
+import {useUsersManage} from "@/api/useUsers";
 
 interface CreateUserProps {
   changed?: boolean;
@@ -21,8 +21,9 @@ const CreateUser: React.FC<CreateUserProps> = ({
   setLoading = () => {},
   setConfirm = () => {},
   onCreate = () => {},
+  item = {},
 }) => {
-  const [details, setDetails] = useState<any>({name: ""});
+  const [details, setDetails] = useState<any>(item);
   const {createUsers, updateUsers} = useUsersManage();
 
   const handleChange = (value: any, field: string) => {
