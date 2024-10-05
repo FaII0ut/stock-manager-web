@@ -3,6 +3,7 @@ import TextInput from "../inputs/TextInput";
 import ApiSearch from "../inputs/ApiSearch";
 import DatePicker from "../inputs/DatePicker";
 import {useInventoryManage} from "@/api/useInventory";
+import moment from "moment";
 
 interface AddInventoryProps {
   changed?: boolean;
@@ -23,14 +24,7 @@ const AddInventory: React.FC<AddInventoryProps> = ({
   setLoading = () => {},
   setConfirm = () => {},
   onCreate = () => {},
-  item = {
-    id: "",
-    name: "",
-    currency: null,
-    currency_id: "",
-    amount: "",
-    icon: null,
-  },
+  item = {},
 }) => {
   const [details, setDetails] = useState<any>(item);
   const {createInventory, updateInventory} = useInventoryManage();
@@ -54,7 +48,10 @@ const AddInventory: React.FC<AddInventoryProps> = ({
     try {
       details.id
         ? (response = await updateInventory(details))
-        : (response = await createInventory(details));
+        : (response = await createInventory({
+            ...details,
+            sku: moment().unix(),
+          }));
       if (response.status === 201 || response.status === 200) {
         console.log(response.data.data);
         onCreate(response.data.data);
@@ -75,20 +72,20 @@ const AddInventory: React.FC<AddInventoryProps> = ({
           width="w-full"
           placeholder="Enter Name"
         />
-          <TextInput
+        <TextInput
           title="Description"
           onChange={(v) => handleChange(v, "description")}
           value={details.description}
           width="w-full"
           placeholder="Description"
         />
-        <TextInput
+        {/* <TextInput
           title="Item Code"
           onChange={(v) => handleChange(v, "sku")}
           value={details.sku}
           width="w-full"
           placeholder="Sku code"
-        />
+        /> */}
         <TextInput
           title="Price"
           onChange={(v) => handleChange(v, "price")}

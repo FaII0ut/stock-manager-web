@@ -11,7 +11,10 @@ import Listing from "@/components/listings/Listing";
 import {checkPermissions} from "@/helper/PermissionHelper";
 import useConfirmation from "@/hooks/useConfirmation";
 import {useStoreActions} from "@/store/hooks";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import {july} from "../../public/inventory/july";
+import moment from "moment";
+import TextInput from "@/components/inputs/TextInput";
 
 interface InventoryProps {}
 
@@ -40,6 +43,7 @@ const fields = [
 const Inventory: React.FC<InventoryProps> = ({}) => {
   const [selectedItem, setSelectedItem] = useState();
   const [show, setShow] = useState(false);
+  const [search, setSearch] = useState("");
   const {confirm} = useConfirmation();
   const setShowConfirm = useStoreActions(
     (action) => action.confirmDelete.setShow
@@ -55,15 +59,14 @@ const Inventory: React.FC<InventoryProps> = ({}) => {
     refetch,
     hasNextPage,
   } = useInfiniteInventory(currentUrl);
-  const {onPaginate, tableData, search, setSearch, tableProps} =
-    useInfiniteTable({
-      data,
-      isFetchingNextPage,
-      fetchNextPage,
-      hasNextPage,
-      setCurrentUrl,
-      initialUrl: "items",
-    });
+  const {onPaginate, tableData, tableProps} = useInfiniteTable({
+    data,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+    setCurrentUrl,
+    initialUrl: "items",
+  });
 
   const actions: any = [
     ...(checkPermissions("delete-inventory")
@@ -98,6 +101,46 @@ const Inventory: React.FC<InventoryProps> = ({}) => {
       : []),
   ];
 
+  // const {createInventory} = useInventoryManage();
+  // const [index, setIndex] = useState(0);
+  // const [loading, setLoading] = useState(false);
+
+  // const handleSave = async () => {
+  //   if (loading) {
+  //     return;
+  //   }
+  //   setLoading(true);
+  //   try {
+  //     const response = await createInventory({
+  //       ...july[index],
+  //       sku: moment().unix(),
+  //       price: 1,
+  //     });
+  //     if (response.status === 201 || response.status === 200) {
+  //       setLoading(false);
+  //       setIndex(index + 1);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   setLoading(false);
+  // };
+
+  // useEffect(() => {
+  //   if (loading) {
+  //     return;
+  //   }
+  //   setTimeout(() => {
+  //     handleSave();
+  //   },1000)
+
+  //   // handleSave()
+  // }, [index]);
+
+  useEffect(() => {
+    setCurrentUrl(`items?search=${search}`);
+  }, [search]);
+
   return (
     <>
       <div className="bg-white w-full  h-full ">
@@ -108,6 +151,15 @@ const Inventory: React.FC<InventoryProps> = ({}) => {
             <></>
           )}
         </Header>
+        <div className="px-6 pt-6 pb-3 w-1/3">
+          <TextInput
+            title=""
+            onChange={setSearch}
+            value={search}
+            width="w-full"
+            placeholder="search"
+          />
+        </div>
         <Listing
           fields={fields}
           data={tableData}
