@@ -12,7 +12,7 @@ import {checkPermissions} from "@/helper/PermissionHelper";
 import useConfirmation from "@/hooks/useConfirmation";
 import {useStoreActions} from "@/store/hooks";
 import React, {useEffect, useState} from "react";
-import {july} from "../../public/inventory/july";
+// import {july} from "../../public/inventory/july";
 import moment from "moment";
 import TextInput from "@/components/inputs/TextInput";
 
