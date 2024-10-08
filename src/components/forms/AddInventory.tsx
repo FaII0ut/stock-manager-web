@@ -87,7 +87,7 @@ const AddInventory: React.FC<AddInventoryProps> = ({
           placeholder="Sku code"
         /> */}
         <TextInput
-          title="Price"
+          title="PAR"
           onChange={(v) => handleChange(v, "price")}
           value={details.price}
           width="w-full"

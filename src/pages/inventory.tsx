@@ -15,6 +15,7 @@ import React, {useEffect, useState} from "react";
 // import {july} from "../../public/inventory/july";
 import moment from "moment";
 import TextInput from "@/components/inputs/TextInput";
+import BondedIcon from "@/components/icon/Bonded";
 
 interface InventoryProps {}
 
@@ -22,16 +23,19 @@ const fields = [
   {
     display: "Item",
     field: "name",
-    element: (value: string, {name, description}: any) => (
-      <div className="px-8 py-4 flex flex-col">
-        <p className="text-zinc-900 text-sm font-medium">{value}</p>
+    element: (value: string, {name, description, price, stock}: any) => (
+      <div className="px-8 py-4 flex flex-col relative">
+        <div className="flex flex-row items-center space-x-1">
+          <p className="text-zinc-900 text-sm font-semibold">{value}</p>
+          {stock < price ? <BondedIcon /> : null}
+        </div>
         <p className="text-zinc-500 text-xs font-medium">{description}</p>
       </div>
     ),
   },
   {
-    display: "SKU",
-    field: "sku",
+    display: "PAR",
+    field: "price",
     textClass: "text-sm text-zinc-500",
   },
   {
