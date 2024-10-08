@@ -201,7 +201,7 @@ const ApiSearch: React.FC<ApiSearchProps> = ({
               className={`absolute ${position} max-h-64 overflow-scroll z-10 flex flex-col gap-1 p-1 w-full ${width} border rounded-lg drop-shadow-lg bg-white outline-none b-100`}
             >
               {filteredItems.length === 0 && query !== "" ? (
-                <div className="relative cursor-default select-none py-2 px-4  text-700">
+                <div className="relative cursor-default select-none py-2 px-4  text-zinc-700">
                   Nothing found.
                 </div>
               ) : (
@@ -214,11 +214,11 @@ const ApiSearch: React.FC<ApiSearchProps> = ({
                       value={item}
                       className={({active}) =>
                         `flex item-center px-4 outline-none py-2 rounded cursor-pointer gap-2 ${
-                          active ? "bg-100" : ""
-                        } ${selected?.id == item.id ? "bg-100" : ""}`
+                          active ? "bg-zinc-100" : ""
+                        } ${selected?.id == item.id ? "bg-zinc-100" : ""}`
                       }
                     >
-                      <p className="text-sm text-900">
+                      <p className="text-sm text-zinc-900">
                         {item.display_name ? item.display_name : item.name}
                       </p>
                       {selected?.id == item.id ? (

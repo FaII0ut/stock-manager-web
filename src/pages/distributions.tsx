@@ -21,10 +21,12 @@ const fields = [
   {
     display: "Name",
     field: "staff.name",
-    element: (value: string, {name, identifier}: any) => (
+    element: (value: string, {staff}: any) => (
       <div className="px-8 py-4 flex flex-col">
         <p className="text-zinc-900 text-sm font-medium">{value}</p>
-        <p className="text-zinc-500 text-xs font-medium">{identifier}</p>
+        <p className="text-zinc-500 text-xs font-medium">
+          {staff.nid} - {staff.staff_code}
+        </p>
       </div>
     ),
   },

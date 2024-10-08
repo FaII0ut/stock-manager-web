@@ -4,6 +4,7 @@ import ApiSearch from "../inputs/ApiSearch";
 import DatePicker from "../inputs/DatePicker";
 import {useDistributionManage} from "@/api/useDistributions";
 import moment from "moment";
+import {Combobox} from "@headlessui/react";
 
 interface AddDistributionProps {
   changed?: boolean;
@@ -67,6 +68,29 @@ const AddDistribution: React.FC<AddDistributionProps> = ({
           url="staff"
           onChange={(v: any) => handleChange(v?.id, "staff_id")}
           defaultSelected={details.staff}
+          renderElement={(item, selected) => {
+            return (
+              <Combobox.Option
+                key={item.id}
+                value={item}
+                className={({active}) =>
+                  `flex item-center px-4 outline-none py-2 rounded cursor-pointer gap-2 ${
+                    active ? "bg-zinc-100" : ""
+                  } ${selected?.id == item.id ? "bg-zinc-100" : ""}`
+                }
+              >
+                <div className="flex flex-col">
+                  <p className="text-sm text-zinc-900">{item.name}</p>
+                  <p className="text-xs text-zinc-500">
+                    {item.nid} - {item.staff_code}
+                  </p>
+                </div>
+                {selected?.id == item.id ? (
+                  <div className="flex ml-auto items-center">X</div>
+                ) : null}
+              </Combobox.Option>
+            );
+          }}
           width="w-full"
           placeholder="Write something here"
         />
