@@ -33,6 +33,12 @@ const items = [
     name: "Inventory",
     route: "/inventory",
   },
+  {
+    id: "categories",
+    icon: <InventoryIcon />,
+    name: "Categories",
+    route: "/categories",
+  },
 ];
 
 const setting: any = {

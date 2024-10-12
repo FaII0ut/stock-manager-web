@@ -36,7 +36,7 @@ const defaultLabels = [
 ];
 
 interface Props {
-  chartData: number[];
+  chartData: any;
 }
 
 const MyChart = ({chartData}: Props) => {
@@ -56,63 +56,8 @@ const MyChart = ({chartData}: Props) => {
       chartRef.current = new Chart(ctx, {
         type: "line",
         data: {
-          labels: [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31",
-          ],
-          datasets: [
-            {
-              label: "Gloves",
-              tension: 0.3,
-              data: [
-                19, 26, 17, 15, 71, 35, 44, 33, 21, 13, 41, 51, 71, 19, 26, 17,
-                15, 71, 35, 44, 33, 21, 13, 41, 51, 71, 32, 45, 23, 53, 44,
-              ],
-              backgroundColor: "rgba(249, 119, 124, 1)",
-              borderColor: "rgba(249, 119, 124, 1)",
-              borderWidth: 2,
-            },
-            {
-              label: "Uniform",
-              tension: 0.3,
-              data: [
-                19, 26, 17, 15, 71, 35, 44, 33, 21, 13, 41, 51, 71, 19, 26, 17,
-                15, 71, 35, 44, 33, 21, 13, 41, 51, 71, 32, 45, 23, 53, 44,
-              ],
-              backgroundColor: "rgba(63, 212, 206)",
-              borderColor: "rgba(63, 212, 206)",
-              borderWidth: 2,
-            },
-          ],
+          labels: chartData.labels,
+          datasets: [...chartData.dataSets],
         },
         options: {
           responsive: true,
@@ -129,7 +74,6 @@ const MyChart = ({chartData}: Props) => {
           },
           scales: {
             x: {
-              stacked: true,
               grid: {
                 color: "transparent",
                 tickBorderDash: [1, 4],
@@ -143,7 +87,6 @@ const MyChart = ({chartData}: Props) => {
             },
 
             y: {
-              stacked: true,
               grid: {
                 color: "transparent",
                 display: false,
@@ -189,15 +132,10 @@ const MyChart = ({chartData}: Props) => {
 
 // want to see some changes in the props on order to test MyChart
 interface LineChartProps {
-  total: number;
+  data: any;
 }
 
-const LineChart: React.FC<LineChartProps> = ({total = 0}) => {
-  const [data, setData] = useState([0, 1, 2, 3, 4, 5, 6, 7]);
-  const onClick = () => {
-    setData((prevData) => prevData.slice(1).concat(10 * Math.random()));
-  };
-
+const LineChart: React.FC<LineChartProps> = ({data = 0}) => {
   return (
     <>
       <MyChart chartData={data} />

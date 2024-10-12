@@ -2,11 +2,10 @@ import React, {useEffect, useState} from "react";
 import TextInput from "../inputs/TextInput";
 import ApiSearch from "../inputs/ApiSearch";
 import DatePicker from "../inputs/DatePicker";
-import {useInventoryManage} from "@/api/useInventory";
-import axios from "@/api/axios";
-import { exportToExcel } from "@/helper/exportHelper";
+import {useStaffsManage} from "@/api/useStaffs";
+import { useCategoriesManage } from "@/api/useCategories";
 
-interface ExportInventoryProps {
+interface CreateCategoryProps {
   changed?: boolean;
   confirm?: boolean;
   open?: boolean;
@@ -18,16 +17,14 @@ interface ExportInventoryProps {
   onCreate?: (item: any) => void;
 }
 
-const ExportInventory: React.FC<ExportInventoryProps> = ({
-  changed = false,
+const CreateCategory: React.FC<CreateCategoryProps> = ({
   confirm = false,
-  open = false,
   setLoading = () => {},
   setConfirm = () => {},
   onCreate = () => {},
-  item = {},
 }) => {
-  const [details, setDetails] = useState<any>(item);
+  const [details, setDetails] = useState<any>({name: ""});
+  const {createCategory, updateCategory} = useCategoriesManage();
 
   const handleChange = (value: any, field: string) => {
     details[field] = value;
@@ -36,44 +33,41 @@ const ExportInventory: React.FC<ExportInventoryProps> = ({
 
   useEffect(() => {
     if (!confirm) return;
-    console.log("fire");
-
     handleSave();
     setConfirm(false);
   }, [confirm]);
 
   const handleSave = async () => {
+    let response = {
+      ...details,
+    };
+    setLoading(true);
     try {
-      console.log("vall");
-      const response = await axios.get("dispatches/export/json", {
-        params: details,
-      });
-      exportToExcel(response.data.dispatches,'file');
-    } catch (error) {}
+      details.id
+        ? (response = await updateCategory(details))
+        : (response = await createCategory(details));
+      if (response.status === 201 || response.status === 200) {
+        console.log(response.data.data);
+        onCreate(response.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
     setLoading(false);
   };
-
-  
 
   return (
     <div className="px-8 border-t b-50">
       <div className="flex flex-col w-full mt-8 gap-y-6">
         <TextInput
-          title="Month"
-          onChange={(v) => handleChange(v, "month")}
-          value={details.month}
+          title="Name"
+          onChange={(v) => handleChange(v, "name")}
+          value={details.name}
           width="w-full"
-          placeholder="Enter Month"
-        />
-        <TextInput
-          title="Year"
-          onChange={(v) => handleChange(v, "year")}
-          value={details.year}
-          width="w-full"
-          placeholder="Enter Year"
+          placeholder="Enter Name"
         />
       </div>
     </div>
   );
 };
-export default ExportInventory;
+export default CreateCategory;

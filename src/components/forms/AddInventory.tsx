@@ -50,7 +50,8 @@ const AddInventory: React.FC<AddInventoryProps> = ({
         ? (response = await updateInventory(details))
         : (response = await createInventory({
             ...details,
-            sku: moment().unix(),
+            sku: String(moment().unix()),
+            status: true,
           }));
       if (response.status === 201 || response.status === 200) {
         console.log(response.data.data);
@@ -86,12 +87,34 @@ const AddInventory: React.FC<AddInventoryProps> = ({
           width="w-full"
           placeholder="Sku code"
         /> */}
+        <ApiSearch
+          title="Category"
+          url="categories"
+          onChange={(v: any) => handleChange(v?.id, "category_id")}
+          defaultSelected={details.category}
+          width="w-full"
+          placeholder="Write something here"
+        />
         <TextInput
-          title="PAR"
+          title="Item code"
+          onChange={(v) => handleChange(v, "code")}
+          value={details.code}
+          width="w-full"
+          placeholder="Enter code"
+        />
+        <TextInput
+          title="Price"
           onChange={(v) => handleChange(v, "price")}
           value={details.price}
           width="w-full"
           placeholder="Enter price"
+        />
+        <TextInput
+          title="PAR"
+          onChange={(v) => handleChange(v, "min_count")}
+          value={details.min_count}
+          width="w-full"
+          placeholder="Enter min_count"
         />
         <TextInput
           title="Stock"

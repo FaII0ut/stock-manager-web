@@ -16,6 +16,8 @@ import React, {useEffect, useState} from "react";
 import moment from "moment";
 import TextInput from "@/components/inputs/TextInput";
 import BondedIcon from "@/components/icon/Bonded";
+import {exportToExcel} from "@/helper/exportHelper";
+import axios from "@/api/axios";
 
 interface InventoryProps {}
 
@@ -23,18 +25,35 @@ const fields = [
   {
     display: "Item",
     field: "name",
-    element: (value: string, {name, description, price, stock}: any) => (
+    element: (value: string, {name, description, min_count, stock}: any) => (
       <div className="px-8 py-4 flex flex-col relative">
         <div className="flex flex-row items-center space-x-1">
           <p className="text-zinc-900 text-sm font-semibold">{value}</p>
-          {stock < price ? <BondedIcon /> : null}
+          {stock < min_count ? <BondedIcon /> : null}
         </div>
         <p className="text-zinc-500 text-xs font-medium">{description}</p>
       </div>
     ),
   },
   {
+    display: "Item code",
+    field: "code",
+    element: (value: string, {category}: any) => (
+      <div className="px-8 py-4 flex flex-col relative">
+        <div className="flex flex-row items-center space-x-1">
+          <p className="text-zinc-900 text-sm font-medium">{value}</p>
+        </div>
+        <p className="text-zinc-500 text-xs font-medium">{category?.name}</p>
+      </div>
+    ),
+  },
+  {
     display: "PAR",
+    field: "min_count",
+    textClass: "text-sm text-zinc-500",
+  },
+  {
+    display: "Price",
     field: "price",
     textClass: "text-sm text-zinc-500",
   },
@@ -145,12 +164,22 @@ const Inventory: React.FC<InventoryProps> = ({}) => {
     setCurrentUrl(`items?search=${search}`);
   }, [search]);
 
+  const exportInventory = async () => {
+    try {
+      const response = await axios.get("/items/export/json");
+      exportToExcel(response.data.items, "file");
+    } catch (error) {}
+  };
+
   return (
     <>
       <div className="bg-white w-full  h-full ">
         <Header hideCrumbs={true} title="Invetory">
           {checkPermissions("add-staff") ? (
-            <Button label="Add new" onClick={() => setShow(true)} />
+            <>
+              <Button label="Export" onClick={() => exportInventory()} />
+              <Button label="Add new" onClick={() => setShow(true)} />
+            </>
           ) : (
             <></>
           )}
